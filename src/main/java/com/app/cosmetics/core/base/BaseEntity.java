@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime created;
+    protected LocalDateTime created;
 
     @UpdateTimestamp
-    private LocalDateTime updated;
+    protected LocalDateTime updated;
 }

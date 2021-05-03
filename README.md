@@ -18,3 +18,5 @@ spring:
 ```
 
 - Run `./mvnw spring-boot:run`
+
+- View API: http://localhost:8080/swagger-ui.html

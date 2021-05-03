@@ -1,8 +1,6 @@
 package com.app.cosmetics.core.item;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@RepositoryRestResource
-public interface ItemRepository extends CrudRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 }

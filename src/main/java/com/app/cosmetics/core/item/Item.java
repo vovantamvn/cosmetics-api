@@ -1,12 +1,16 @@
 package com.app.cosmetics.core.item;
 
 import com.app.cosmetics.core.base.BaseEntity;
+import com.app.cosmetics.core.stock.Stock;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,4 +28,7 @@ public class Item extends BaseEntity {
 
     @PositiveOrZero
     private int price;
+
+    @OneToMany(mappedBy = "item")
+    private List<Stock> stocks = new ArrayList<>();
 }

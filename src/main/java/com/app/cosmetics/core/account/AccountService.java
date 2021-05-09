@@ -5,6 +5,7 @@ import com.app.cosmetics.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
     public AccountResponse create(AccountRequest request) {
@@ -22,7 +24,7 @@ public class AccountService {
 
         Account account = new Account();
         account.setUsername(request.getUsername());
-        account.setPassword(request.getPassword());
+        account.setPassword(passwordEncoder.encode(request.getPassword()));
         account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());
         account.setLastName(request.getLastName());

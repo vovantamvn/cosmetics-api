@@ -5,6 +5,7 @@ import com.app.cosmetics.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,12 @@ public class AccountService {
     public AccountResponse update(long id, AccountRequest request) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
+
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if ( !username.equals(account.getUsername()) ) {
+            throw new InvalidException("You don't have permission");
+        }
 
         account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());

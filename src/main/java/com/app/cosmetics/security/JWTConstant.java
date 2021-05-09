@@ -8,7 +8,7 @@ public class JWTConstant {
 
     private static final String SECRET = "secret";
 
-    public static final int EXPIRATION_TIME = 15 * 60 * 1000;
+    public static final int EXPIRATION_TIME = 15 * 60 * 60 * 1000;
     public static final String HEADER_STRING = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final Algorithm ALGORITHM = Algorithm.HMAC512(SECRET.getBytes());

@@ -1,11 +1,11 @@
 package com.app.cosmetics.core.account;
 
+import com.app.cosmetics.exception.InvalidException;
+import com.app.cosmetics.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Log4j2
 @Service
@@ -16,6 +16,10 @@ public class AccountService {
     private final ModelMapper modelMapper;
 
     public AccountResponse create(AccountRequest request) {
+        if (accountRepository.findAccountByUsername(request.getUsername()).isPresent()) {
+            throw new InvalidException("Username exits");
+        }
+
         Account account = new Account();
         account.setUsername(request.getUsername());
         account.setPassword(request.getPassword());
@@ -29,7 +33,7 @@ public class AccountService {
 
         log.info("Create account {} success", account.getUsername());
 
-        return convert(result);
+        return toResponse(result);
     }
 
     /**
@@ -39,13 +43,9 @@ public class AccountService {
      * @return
      */
     public AccountResponse update(long id, AccountRequest request) {
-        Optional<Account> opt = accountRepository.findById(id);
+        Account account = accountRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
 
-        if (opt.isEmpty()) {
-            throw new RuntimeException();
-        }
-
-        Account account = opt.get();
         account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());
         account.setLastName(request.getLastName());
@@ -56,19 +56,16 @@ public class AccountService {
 
         log.info("Update account {} success", account.getUsername());
 
-        return convert(result);
+        return toResponse(result);
     }
 
     public AccountResponse findById(long id) {
-        Optional<Account> opt = accountRepository.findById(id);
-        if (opt.isPresent()) {
-            return convert(opt.get());
-        }
-
-        throw new RuntimeException();
+        Account account = accountRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        return toResponse(account);
     }
 
-    private AccountResponse convert(Account account) {
+    private AccountResponse toResponse(Account account) {
         return modelMapper.map(account, AccountResponse.class);
     }
 }

@@ -1,8 +1,16 @@
 package com.app.cosmetics.exception;
 
-public class MyException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public MyException(String message) {
+public class MyException extends RuntimeException {
+    private final HttpStatus httpStatus;
+
+    public MyException(HttpStatus httpStatus, String message) {
         super(message);
+        this.httpStatus = httpStatus;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 }

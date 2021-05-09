@@ -2,7 +2,7 @@ package com.app.cosmetics.core.stock;
 
 import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.item.ItemRepository;
-import com.app.cosmetics.exception.MyException;
+import com.app.cosmetics.exception.InvalidException;
 import com.app.cosmetics.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,7 @@ public class StockService {
                 .findById(request.getItemId())
                 .orElseThrow(() -> {
                     log.error("Item id {} invalid", request.getItemId());
-                    return new MyException("Item ID invalid");
+                    return new InvalidException("Item ID invalid");
                 });
 
         Stock stock = new Stock();

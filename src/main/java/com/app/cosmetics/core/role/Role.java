@@ -14,10 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Role extends BaseEntity {
 
+    @Column(unique = true)
     @Enumerated(value = EnumType.STRING)
     private RoleType type;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "account_roles",
             joinColumns = @JoinColumn(name = "role_id"),

@@ -35,16 +35,11 @@ public class BranchApi {
     @PostMapping
     public ResponseEntity<BranchData> create(
             @Valid @RequestBody BranchRequest request,
-            BindingResult bindingResult,
-            @AuthenticationPrincipal User user
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
-
-        System.out.println("Authorization");
-        System.out.println(user);
-        System.out.println(authorizationService.isAdmin(user));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -68,12 +63,12 @@ public class BranchApi {
     public ResponseEntity<BranchData> findById(@PathVariable long id) {
         return ResponseEntity.ok(branchService.findById(id));
     }
-}
 
-@Setter
-@Getter
-@NoArgsConstructor
-class BranchRequest {
-    @NotBlank(message = "can't blank")
-    private String name;
+    @Setter
+    @Getter
+    @NoArgsConstructor
+    public static class BranchRequest {
+        @NotBlank
+        private String name;
+    }
 }

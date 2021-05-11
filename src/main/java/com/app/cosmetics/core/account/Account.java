@@ -29,7 +29,7 @@ public class Account extends BaseEntity {
     private String address;
     private String avatar;
 
-    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accounts")
     private List<Role> roles = new ArrayList<>();
 
     public Account(String username, String password, String email, String firstName, String lastName, String address, String avatar, List<Role> roles) {

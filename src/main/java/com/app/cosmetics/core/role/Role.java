@@ -18,12 +18,7 @@ public class Role extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private RoleType type;
 
-    @ManyToMany
-    @JoinTable(
-            name = "account_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id")
-    )
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.REMOVE)
     private List<Account> accounts = new ArrayList<>();
 
     public Role(RoleType type) {

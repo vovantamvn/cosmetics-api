@@ -26,7 +26,7 @@ public class BranchService {
         return toResponse(result);
     }
 
-    public BranchData findById(long id) {
+    public BranchData findById(Long id) {
         Branch branch = branchRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -42,7 +42,7 @@ public class BranchService {
                 .collect(Collectors.toList());
     }
 
-    public BranchData update(long id, String name) {
+    public BranchData update(Long id, String name) {
         Branch branch = branchRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);

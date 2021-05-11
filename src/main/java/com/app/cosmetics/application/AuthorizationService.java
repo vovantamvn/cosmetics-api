@@ -1,13 +1,12 @@
 package com.app.cosmetics.application;
 
-import com.app.cosmetics.api.exception.NotFoundException;
 import com.app.cosmetics.core.account.Account;
 import com.app.cosmetics.core.account.AccountRepository;
+import com.app.cosmetics.core.role.Role;
 import com.app.cosmetics.core.role.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,7 +25,11 @@ public class AuthorizationService {
 
         Account account = opt.get();
 
-        System.out.println(account.getRoles());
+        for (Role role : account.getRoles()) {
+            if (role.getType() == RoleType.ROLE_ADMIN) {
+                return true;
+            }
+        }
 
         return false;
     }
@@ -34,10 +37,6 @@ public class AuthorizationService {
     private Optional<Account> getCurrentAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
-
-        System.out.println("getCurrentAccount");
-        System.out.println(username);
-
         return accountRepository.findAccountByUsername(username);
     }
 }

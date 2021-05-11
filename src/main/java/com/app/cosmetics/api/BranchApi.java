@@ -1,6 +1,7 @@
 package com.app.cosmetics.api;
 
 import com.app.cosmetics.api.exception.InvalidRequestException;
+import com.app.cosmetics.api.exception.NoAuthorizationException;
 import com.app.cosmetics.application.AuthorizationService;
 import com.app.cosmetics.application.data.BranchData;
 import com.app.cosmetics.application.BranchService;
@@ -10,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +36,10 @@ public class BranchApi {
             @Valid @RequestBody BranchRequest request,
             BindingResult bindingResult
     ) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
@@ -48,10 +51,14 @@ public class BranchApi {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<BranchData> update(
-            @PathVariable long id,
+            @PathVariable Long id,
             @Valid @RequestBody BranchRequest request,
             BindingResult bindingResult
     ) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
@@ -60,7 +67,7 @@ public class BranchApi {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<BranchData> findById(@PathVariable long id) {
+    public ResponseEntity<BranchData> findById(@PathVariable Long id) {
         return ResponseEntity.ok(branchService.findById(id));
     }
 

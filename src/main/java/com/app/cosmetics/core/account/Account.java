@@ -29,7 +29,13 @@ public class Account extends BaseEntity {
     private String address;
     private String avatar;
 
-    @OneToMany(mappedBy = "accounts")
+    @ManyToMany
+    @JoinTable(
+            name = "account_roles",
+            joinColumns = @JoinColumn(
+                    name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
     public Account(String username, String password, String email, String firstName, String lastName, String address, String avatar, List<Role> roles) {

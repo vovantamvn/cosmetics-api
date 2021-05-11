@@ -1,6 +1,8 @@
 package com.app.cosmetics.api;
 
 import com.app.cosmetics.api.exception.InvalidRequestException;
+import com.app.cosmetics.api.exception.NoAuthorizationException;
+import com.app.cosmetics.application.AuthorizationService;
 import com.app.cosmetics.application.CategoryService;
 import com.app.cosmetics.application.data.CategoryData;
 import lombok.Getter;
@@ -22,6 +24,7 @@ import java.util.List;
 public class CategoryApi {
 
     private final CategoryService categoryService;
+    private final AuthorizationService authorizationService;
 
     @GetMapping
     public ResponseEntity<List<CategoryData>> findAll() {
@@ -38,6 +41,10 @@ public class CategoryApi {
             @Valid @RequestBody CategoryRequest request,
             BindingResult bindingResult
     ) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
@@ -53,6 +60,10 @@ public class CategoryApi {
             @Valid @RequestBody CategoryRequest request,
             BindingResult bindingResult
     ) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }

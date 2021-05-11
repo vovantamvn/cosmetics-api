@@ -1,5 +1,7 @@
 package com.app.cosmetics.storage;
 
+import com.app.cosmetics.api.UploadFileResponse;
+import com.app.cosmetics.application.UploadFileService;
 import org.aspectj.util.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

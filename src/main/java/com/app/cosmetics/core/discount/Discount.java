@@ -27,8 +27,8 @@ public class Discount extends BaseEntity {
     @PositiveOrZero
     private int count;
 
-    @Enumerated(EnumType.STRING)
-    private DiscountType type;
+    @NotBlank
+    private String type;
 
     private boolean active;
 }

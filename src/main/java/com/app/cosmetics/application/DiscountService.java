@@ -29,7 +29,7 @@ public class DiscountService {
         discount.setDescription(request.getDescription());
         discount.setExpired(request.getExpired());
         discount.setCount(request.getCount());
-        discount.setType(request.getType());
+//        discount.setType(request.getType());
         discount.setActive(true);
 
         Discount result = discountRepository.save(discount);

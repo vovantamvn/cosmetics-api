@@ -1,14 +1,21 @@
 package com.app.cosmetics.application;
 
+import com.app.cosmetics.api.ItemApi;
+import com.app.cosmetics.application.data.BranchData;
+import com.app.cosmetics.application.data.CategoryData;
+import com.app.cosmetics.core.branch.Branch;
+import com.app.cosmetics.core.branch.BranchRepository;
+import com.app.cosmetics.core.category.Category;
+import com.app.cosmetics.core.category.CategoryRepository;
 import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.item.ItemRepository;
-import com.app.cosmetics.api.ItemRequest;
-import com.app.cosmetics.application.data.ItemResponse;
+import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,21 +24,36 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final BranchRepository branchRepository;
+    private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-    public ItemResponse create(ItemRequest request) {
-        Item item = new Item();
-        item.setName(request.getName());
-        item.setDescription(request.getDescription());
-        item.setImage(request.getImage());
-        item.setPrice(request.getPrice());
+    public ItemData create(ItemApi.ItemRequest request) {
+        Branch branch = branchRepository
+                .findById(request.getBranchId())
+                .orElseThrow(NotFoundException::new);
+
+        Category category = categoryRepository
+                .findById(request.getCategoryId())
+                .orElseThrow(NotFoundException::new);
+
+        Item item = new Item(
+                request.getName(),
+                request.getDescription(),
+                request.getImage(),
+                request.getCount(),
+                request.getPrice(),
+                new ArrayList<>(),
+                branch,
+                category
+        );
 
         Item result = itemRepository.save(item);
 
         return toResponse(result);
     }
 
-    public ItemResponse findById(long id) {
+    public ItemData findById(long id) {
         Item item = itemRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -39,28 +61,35 @@ public class ItemService {
         return toResponse(item);
     }
 
-    /**
-     * Update name, description, image, price
-     * @param id
-     * @param request
-     * @return
-     */
-    public ItemResponse update(long id, ItemRequest request) {
+    public ItemData update(long id, ItemApi.ItemRequest request) {
         Item item = itemRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
 
-        item.setName(request.getName());
-        item.setDescription(request.getDescription());
-        item.setImage(request.getImage());
-        item.setPrice(request.getPrice());
+        Branch branch = branchRepository
+                .findById(request.getBranchId())
+                .orElseThrow(NotFoundException::new);
+
+        Category category = categoryRepository
+                .findById(request.getCategoryId())
+                .orElseThrow(NotFoundException::new);
+
+        item.update(
+                request.getName(),
+                request.getDescription(),
+                request.getImage(),
+                request.getCount(),
+                request.getPrice(),
+                branch,
+                category
+        );
 
         Item result = itemRepository.save(item);
 
         return toResponse(result);
     }
 
-    public List<ItemResponse> findAll() {
+    public List<ItemData> findAll() {
         return itemRepository
                 .findAll()
                 .stream()
@@ -68,7 +97,24 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    private ItemResponse toResponse(Item item) {
-        return modelMapper.map(item, ItemResponse.class);
+    private ItemData toResponse(Item item) {
+        CategoryData categoryData = (item.getCategory() == null)
+                ? null
+                : modelMapper.map(item.getCategory(), CategoryData.class);
+
+        BranchData branchData = (item.getBranch() == null)
+                ? null
+                : modelMapper.map(item.getBranch(), BranchData.class);
+
+        return ItemData.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .image(item.getImage())
+                .count(item.getCount())
+                .price(item.getPrice())
+                .category(categoryData)
+                .branch(branchData)
+                .build();
     }
 }

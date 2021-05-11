@@ -5,16 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ItemResponse {
+public class CategoryData {
     private Long id;
-
     private String name;
-
-    private String description;
-
-    private String image;
-
-    private int count;
-
-    private int price;
 }

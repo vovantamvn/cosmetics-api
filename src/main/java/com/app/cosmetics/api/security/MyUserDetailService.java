@@ -22,8 +22,6 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Account> opt = accountRepository.findAccountByUsername(username);
 
-        System.out.println(username);
-
         if (opt.isPresent()) {
             Account account = opt.get();
 

@@ -37,17 +37,21 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String header) {
         String token = header.replace(JWTConstant.TOKEN_PREFIX, "");
 
-        String username = JWT.require(JWTConstant.ALGORITHM)
-                .build()
-                .verify(token)
-                .getSubject();
+        try {
+            String username = JWT.require(JWTConstant.ALGORITHM)
+                    .build()
+                    .verify(token)
+                    .getSubject();
 
-        if (username != null) {
-            return new UsernamePasswordAuthenticationToken(
-                    username,
-                    null,
-                    new ArrayList<>()
-            );
+            if (username != null) {
+                return new UsernamePasswordAuthenticationToken(
+                        username,
+                        null,
+                        new ArrayList<>()
+                );
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
         return null;

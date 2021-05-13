@@ -55,4 +55,11 @@ public class CategoryService {
     private CategoryData toResponse(Category category) {
         return modelMapper.map(category, CategoryData.class);
     }
+
+    public void deleteById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new NotFoundException();
+        }
+        categoryRepository.deleteById(id);
+    }
 }

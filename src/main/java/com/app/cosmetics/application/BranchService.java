@@ -55,6 +55,9 @@ public class BranchService {
     }
 
     public void delete(Long id) {
+        if (!branchRepository.existsById(id)) {
+            throw new NotFoundException();
+        }
         branchRepository.deleteById(id);
     }
 

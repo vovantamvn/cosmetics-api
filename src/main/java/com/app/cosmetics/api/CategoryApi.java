@@ -71,6 +71,15 @@ public class CategoryApi {
         return ResponseEntity.ok(categoryService.update(id, request.getName()));
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+        categoryService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
     @Setter
     @Getter
     @NoArgsConstructor

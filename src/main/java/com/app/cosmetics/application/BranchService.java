@@ -54,6 +54,10 @@ public class BranchService {
         return toResponse(result);
     }
 
+    public void delete(Long id) {
+        branchRepository.deleteById(id);
+    }
+
     private BranchData toResponse(Branch branch) {
         return modelMapper.map(branch, BranchData.class);
     }

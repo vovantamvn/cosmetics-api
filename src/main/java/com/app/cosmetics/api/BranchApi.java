@@ -71,6 +71,12 @@ public class BranchApi {
         return ResponseEntity.ok(branchService.findById(id));
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        branchService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
     @Setter
     @Getter
     @NoArgsConstructor

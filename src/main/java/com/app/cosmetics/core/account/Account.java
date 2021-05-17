@@ -1,6 +1,7 @@
 package com.app.cosmetics.core.account;
 
 import com.app.cosmetics.core.base.BaseEntity;
+import com.app.cosmetics.core.order.Order;
 import com.app.cosmetics.core.role.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,17 +18,27 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Account extends BaseEntity {
+
     @Column(unique = true)
     private String username;
+
     private String password;
+
     @Email
     @Column(unique = true)
     private String email;
+
     @NotBlank
     private String firstName;
+
     private String lastName;
+
     private String address;
+
     private String avatar;
+
+    @OneToMany(mappedBy = "account")
+    private List<Order> orders = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

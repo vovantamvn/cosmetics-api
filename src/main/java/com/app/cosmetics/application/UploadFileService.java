@@ -22,6 +22,12 @@ public class UploadFileService {
         String type = contentType.substring("image/".length());
 
         String storagePath = getStoragePath();
+
+        File storage = new File(storagePath);
+        if (!storage.exists()) {
+            storage.mkdir();
+        }
+
         String fileName = UUID.randomUUID() + "." + type;
         String filePath = storagePath + "/" + fileName;
 
@@ -41,7 +47,7 @@ public class UploadFileService {
         try {
             return FileUtil.readAsByteArray(file);
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 }

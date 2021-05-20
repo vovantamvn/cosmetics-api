@@ -69,6 +69,19 @@ public class ItemApi {
         return ResponseEntity.ok(itemService.update(id, request));
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
+        itemService.delete(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
     @Setter
     @Getter
     @NoArgsConstructor

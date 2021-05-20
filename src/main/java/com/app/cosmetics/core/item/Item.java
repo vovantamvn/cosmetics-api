@@ -3,12 +3,14 @@ package com.app.cosmetics.core.item;
 import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.branch.Branch;
 import com.app.cosmetics.core.category.Category;
+import com.app.cosmetics.core.orderitem.OrderItem;
 import com.app.cosmetics.core.stock.Stock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ import java.util.List;
 public class Item extends BaseEntity {
     @NotBlank
     private String name;
+    @Lob
     private String description;
     private String image;
     @PositiveOrZero
@@ -35,6 +38,8 @@ public class Item extends BaseEntity {
     private Branch branch;
     @ManyToOne
     private Category category;
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Item(String name, String description, String image, int count, int price, List<Stock> stocks, Branch branch, Category category) {
         this.name = name;

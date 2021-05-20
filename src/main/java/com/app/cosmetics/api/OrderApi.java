@@ -19,7 +19,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "bills")
+@RequestMapping(path = "orders")
 @RequiredArgsConstructor
 public class OrderApi {
 
@@ -78,6 +78,7 @@ public class OrderApi {
         private String lastName;
         @NotBlank
         private String address;
+        @NotBlank
         private String phone;
         @NotBlank
         private String email;

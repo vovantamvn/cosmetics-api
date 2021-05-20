@@ -6,6 +6,7 @@ import com.app.cosmetics.core.order.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -21,12 +22,13 @@ public class OrderItem extends BaseEntity {
 
     private int price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Order order;
 
-    public OrderItem(Item item, int count, int price) {
+    public OrderItem(Item item, int count, int price, Order order) {
         this.item = item;
         this.count = count;
         this.price = price;
+        this.order = order;
     }
 }

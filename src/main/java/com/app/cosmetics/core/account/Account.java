@@ -37,6 +37,8 @@ public class Account extends BaseEntity {
 
     private String avatar;
 
+    private String phone;
+
     @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
@@ -58,6 +60,11 @@ public class Account extends BaseEntity {
         this.address = address;
         this.avatar = avatar;
         this.roles = roles;
+    }
+
+    public Account(String username, String password, String email, String firstName, String lastName, String address, String avatar, String phone, List<Role> roles) {
+        this(username, password, email, firstName, lastName, address, avatar, roles);
+        this.phone = phone;
     }
 
     public void update(String password, String email, String firstName, String lastName, String address, String avatar) {

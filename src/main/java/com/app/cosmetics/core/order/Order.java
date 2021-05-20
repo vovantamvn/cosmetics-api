@@ -5,11 +5,13 @@ import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.orderitem.OrderItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 @Getter
 @Entity(name = "orders")
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class Order extends BaseEntity {
 
     private int total;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order(Account account, OrderStatus status, int total, List<OrderItem> orderItems) {

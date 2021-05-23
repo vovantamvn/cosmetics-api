@@ -30,7 +30,7 @@ public class ItemService {
 
     public ItemData create(ItemApi.ItemRequest request) {
         Branch branch = branchRepository
-                .findById(request.getBranchId())
+                .findById(request.getBrandId())
                 .orElseThrow(NotFoundException::new);
 
         Category category = categoryRepository
@@ -67,7 +67,7 @@ public class ItemService {
                 .orElseThrow(NotFoundException::new);
 
         Branch branch = branchRepository
-                .findById(request.getBranchId())
+                .findById(request.getBrandId())
                 .orElseThrow(NotFoundException::new);
 
         Category category = categoryRepository

@@ -1,6 +1,8 @@
 package com.app.cosmetics.api.security;
 
+import com.app.cosmetics.api.exception.ExpiredException;
 import com.auth0.jwt.JWT;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Log4j2
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
@@ -51,7 +54,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 );
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            log.error(exception);
+            throw new ExpiredException();
         }
 
         return null;

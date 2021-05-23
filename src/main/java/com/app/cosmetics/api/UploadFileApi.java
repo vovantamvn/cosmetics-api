@@ -11,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "uploadFile/")
+@RequestMapping(path = "uploadFile")
 @RequiredArgsConstructor
-public class UploadFileController {
+public class UploadFileApi {
 
     private final UploadFileService service;
 

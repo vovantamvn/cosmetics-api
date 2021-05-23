@@ -1,6 +1,6 @@
 package com.app.cosmetics.storage;
 
-import com.app.cosmetics.api.UploadFileResponse;
+import com.app.cosmetics.application.data.FileData;
 import com.app.cosmetics.application.UploadFileService;
 import org.aspectj.util.FileUtil;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class UploadFileServiceTest {
         );
 
         // Act
-        UploadFileResponse response = uploadFileService.saveFile(multipartFile);
+        FileData response = uploadFileService.saveFile(multipartFile);
         String path = response.getPath(); // path: {uploadFile/fileName}
         String fileName = path.substring("uploadFile/".length());
 

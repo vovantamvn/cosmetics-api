@@ -7,6 +7,7 @@ import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
 import com.app.cosmetics.core.branch.BranchRepository;
 import com.app.cosmetics.core.category.CategoryRepository;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -96,8 +97,8 @@ public class ItemApi {
     private final CategoryRepository categoryRepository;
 
     private void validateRequest(ItemRequest request, BindingResult bindingResult) {
-        if (!branchRepository.existsById(request.getBrandId())) {
-            bindingResult.rejectValue("brandId", "NOT_EXISTS", "brandId must be exists");
+        if (!branchRepository.existsById(request.getBranchId())) {
+            bindingResult.rejectValue("branchId", "NOT_EXISTS", "branchId must be exists");
         }
 
         if (!categoryRepository.existsById(request.getCategoryId())) {
@@ -118,7 +119,7 @@ public class ItemApi {
         @PositiveOrZero
         private int price;
         @NotNull
-        private Long brandId;
+        private Long branchId;
         @NotNull
         private Long categoryId;
     }

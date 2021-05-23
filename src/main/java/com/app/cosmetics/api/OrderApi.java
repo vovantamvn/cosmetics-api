@@ -4,6 +4,7 @@ import com.app.cosmetics.api.exception.InvalidRequestException;
 import com.app.cosmetics.application.OrderService;
 import com.app.cosmetics.application.data.OrderData;
 import com.app.cosmetics.core.item.ItemRepository;
+import com.app.cosmetics.core.order.PaymentMethod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
@@ -45,18 +47,26 @@ public class OrderApi {
 
         if (items == null || items.isEmpty()) {
             bindingResult.rejectValue("items", "NOT_NULL", "items must be not null");
+        } else {
+            for (OrderItemRequest itemBill : items) {
+                if (!itemRepository.existsById(itemBill.getItemId())) {
+                    bindingResult.rejectValue(
+                            "items",
+                            "NOT_FOUND",
+                            String.format("itemId %ld not found", itemBill.getItemId())
+                    );
+
+                    break;
+                }
+            }
         }
 
-        for (OrderItemRequest itemBill : items) {
-            if (!itemRepository.existsById(itemBill.getItemId())) {
-                bindingResult.rejectValue(
-                        "items",
-                        "NOT_FOUND",
-                        String.format("itemId %ld not found", itemBill.getItemId())
-                );
-
-                break;
-            }
+        if (!List.of("ONLINE", "OFFLINE").contains(request.getPaymentMethod())) {
+            bindingResult.rejectValue(
+                    "paymentMethod",
+                    "INVALID",
+                    "paymentMethod must be in [ONLINE | OFFLINE]"
+            );
         }
 
         if (bindingResult.hasErrors()) {
@@ -75,13 +85,23 @@ public class OrderApi {
     public static class OrderRequest {
         @NotBlank
         private String firstName;
+
         private String lastName;
+
         @NotBlank
         private String address;
+
         @NotBlank
         private String phone;
+
         @NotBlank
         private String email;
+
+        @NotBlank
+        private String paymentMethod;
+
+        private String note;
+
         private List<OrderItemRequest> items;
     }
 
@@ -89,7 +109,9 @@ public class OrderApi {
     @Setter
     @NoArgsConstructor
     public static class OrderItemRequest {
+        @NotNull
         private Long itemId;
+
         @PositiveOrZero
         private int count;
     }

@@ -11,6 +11,7 @@ import com.app.cosmetics.core.item.ItemRepository;
 import com.app.cosmetics.core.order.Order;
 import com.app.cosmetics.core.order.OrderRepository;
 import com.app.cosmetics.core.order.OrderStatus;
+import com.app.cosmetics.core.order.PaymentMethod;
 import com.app.cosmetics.core.orderitem.OrderItem;
 import com.app.cosmetics.core.orderitem.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,10 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         Order order = new Order();
+        order.setNote(request.getNote());
+        order.setPaymentMethod(PaymentMethod.valueOf(
+                request.getPaymentMethod()
+        ));
         orderRepository.save(order); // save data
 
         int totalPrice = 0;
@@ -124,6 +129,8 @@ public class OrderService {
                 .phone(account.getPhone())
                 .email(account.getEmail())
                 .total(order.getTotal())
+                .paymentMethod(order.getPaymentMethod())
+                .note(order.getNote())
                 .items(orderItemData)
                 .build();
     }

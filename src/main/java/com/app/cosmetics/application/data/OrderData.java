@@ -1,5 +1,6 @@
 package com.app.cosmetics.application.data;
 
+import com.app.cosmetics.core.order.PaymentMethod;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,5 +16,7 @@ public class OrderData {
     private String phone;
     private String email;
     private int total;
+    private PaymentMethod paymentMethod;
+    private String note;
     private List<OrderItemData> items;
 }

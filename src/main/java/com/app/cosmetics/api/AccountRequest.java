@@ -9,8 +9,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 public class AccountRequest {
+    @NotBlank
     private String username;
 
+    @NotBlank
     private String password;
 
     @Email

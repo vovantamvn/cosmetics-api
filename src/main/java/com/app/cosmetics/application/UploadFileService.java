@@ -1,6 +1,6 @@
 package com.app.cosmetics.application;
 
-import com.app.cosmetics.api.UploadFileResponse;
+import com.app.cosmetics.application.data.FileData;
 import org.aspectj.util.FileUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +17,7 @@ public class UploadFileService {
         return System.getProperty("user.dir") + "/storage";
     }
 
-    public UploadFileResponse saveFile(MultipartFile file) throws IOException {
+    public FileData saveFile(MultipartFile file) throws IOException {
         String contentType = file.getContentType();
         String type = contentType.substring("image/".length());
 
@@ -35,7 +35,7 @@ public class UploadFileService {
         fileOutputStream.write(file.getBytes());
 
         String path = "uploadFile/" + fileName;
-        return new UploadFileResponse(path);
+        return new FileData(path);
     }
 
     public byte[] loadFile(String fileName) {

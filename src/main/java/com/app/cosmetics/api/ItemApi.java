@@ -5,6 +5,8 @@ import com.app.cosmetics.api.exception.NoAuthorizationException;
 import com.app.cosmetics.application.AuthorizationService;
 import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
+import com.app.cosmetics.core.branch.BranchRepository;
+import com.app.cosmetics.core.category.CategoryRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
@@ -43,6 +46,8 @@ public class ItemApi {
             throw new NoAuthorizationException();
         }
 
+        validateRequest(request, bindingResult);
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
@@ -61,6 +66,8 @@ public class ItemApi {
         if (!authorizationService.isAdmin()) {
             throw new NoAuthorizationException();
         }
+
+        validateRequest(request, bindingResult);
 
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
@@ -82,6 +89,22 @@ public class ItemApi {
                 .build();
     }
 
+    /**
+     * Validate brandId, categoryId
+     */
+    private final BranchRepository branchRepository;
+    private final CategoryRepository categoryRepository;
+
+    private void validateRequest(ItemRequest request, BindingResult bindingResult) {
+        if (!branchRepository.existsById(request.getBrandId())) {
+            bindingResult.rejectValue("brandId", "NOT_EXISTS", "brandId must be exists");
+        }
+
+        if (!categoryRepository.existsById(request.getCategoryId())) {
+            bindingResult.rejectValue("categoryId", "NOT_EXISTS", "categoryId must be exists");
+        }
+    }
+
     @Setter
     @Getter
     @NoArgsConstructor
@@ -94,7 +117,9 @@ public class ItemApi {
         private int count;
         @PositiveOrZero
         private int price;
-        private Long branchId;
-        private Long CategoryId;
+        @NotNull
+        private Long brandId;
+        @NotNull
+        private Long categoryId;
     }
 }

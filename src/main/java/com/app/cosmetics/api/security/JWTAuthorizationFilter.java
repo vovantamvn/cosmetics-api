@@ -55,7 +55,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             }
         } catch (Exception exception) {
             log.error(exception);
-            throw new ExpiredException();
         }
 
         return null;

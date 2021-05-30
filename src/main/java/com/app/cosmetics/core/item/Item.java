@@ -4,12 +4,14 @@ import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.branch.Branch;
 import com.app.cosmetics.core.category.Category;
 import com.app.cosmetics.core.comment.Comment;
+import com.app.cosmetics.core.orderitem.OrderItem;
 import com.app.cosmetics.core.stock.Stock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -27,6 +29,7 @@ public class Item extends BaseEntity {
     @NotBlank
     private String name;
 
+    @Lob
     private String description;
 
     private String image;
@@ -50,6 +53,8 @@ public class Item extends BaseEntity {
 
     @ManyToOne
     private Category category;
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToMany
     private List<Comment> comments = new ArrayList<>();

@@ -5,6 +5,8 @@ import com.app.cosmetics.api.exception.NoAuthorizationException;
 import com.app.cosmetics.application.AuthorizationService;
 import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
+import com.app.cosmetics.core.branch.BranchRepository;
+import com.app.cosmetics.core.category.CategoryRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,8 @@ public class ItemApi {
             throw new NoAuthorizationException();
         }
 
+        validateRequest(request, bindingResult);
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
@@ -65,11 +69,42 @@ public class ItemApi {
             throw new NoAuthorizationException();
         }
 
+        validateRequest(request, bindingResult);
+
         if (bindingResult.hasErrors()) {
             throw new InvalidRequestException(bindingResult);
         }
 
         return ResponseEntity.ok(itemService.update(id, request));
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!authorizationService.isAdmin()) {
+            throw new NoAuthorizationException();
+        }
+
+        itemService.delete(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    /**
+     * Validate brandId, categoryId
+     */
+    private final BranchRepository branchRepository;
+    private final CategoryRepository categoryRepository;
+
+    private void validateRequest(ItemRequest request, BindingResult bindingResult) {
+        if (!branchRepository.existsById(request.getBranchId())) {
+            bindingResult.rejectValue("branchId", "NOT_EXISTS", "branchId must be exists");
+        }
+
+        if (!categoryRepository.existsById(request.getCategoryId())) {
+            bindingResult.rejectValue("categoryId", "NOT_EXISTS", "categoryId must be exists");
+        }
     }
 
     @Setter
@@ -98,6 +133,6 @@ public class ItemApi {
 
         private Long branchId;
 
-        private Long CategoryId;
+        private Long categoryId;
     }
 }

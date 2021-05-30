@@ -119,4 +119,12 @@ public class ItemService {
                 .branch(branchData)
                 .build();
     }
+
+    public void delete(Long id) {
+        if (itemRepository.existsById(id)) {
+            itemRepository.deleteById(id);
+        } else {
+            throw new NotFoundException();
+        }
+    }
 }

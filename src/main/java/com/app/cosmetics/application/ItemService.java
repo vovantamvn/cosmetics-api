@@ -37,16 +37,16 @@ public class ItemService {
                 .findById(request.getCategoryId())
                 .orElseThrow(NotFoundException::new);
 
-        Item item = new Item(
-                request.getName(),
-                request.getDescription(),
-                request.getImage(),
-                request.getCount(),
-                request.getPrice(),
-                new ArrayList<>(),
-                branch,
-                category
-        );
+        Item item = new Item();
+        item.setName(request.getName());
+        item.setDescription(request.getDescription());
+        item.setImage(request.getImage());
+        item.setCount(request.getCount());
+        item.setPrice(request.getPrice());
+        item.setPrePrice(request.getPrePrice());
+        item.setExpiry(request.getExpiry());
+        item.setBranch(branch);
+        item.setCategory(category);
 
         Item result = itemRepository.save(item);
 
@@ -113,6 +113,8 @@ public class ItemService {
                 .image(item.getImage())
                 .count(item.getCount())
                 .price(item.getPrice())
+                .prePrice(item.getPrePrice())
+                .expiry(item.getExpiry())
                 .category(categoryData)
                 .branch(branchData)
                 .build();

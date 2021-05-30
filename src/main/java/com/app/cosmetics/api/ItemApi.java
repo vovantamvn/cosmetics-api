@@ -7,7 +7,6 @@ import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
 import com.app.cosmetics.core.branch.BranchRepository;
 import com.app.cosmetics.core.category.CategoryRepository;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,6 +29,7 @@ import java.util.List;
 public class ItemApi {
 
     private final ItemService itemService;
+
     private final AuthorizationService authorizationService;
 
     @GetMapping
@@ -110,17 +111,28 @@ public class ItemApi {
     @Getter
     @NoArgsConstructor
     public static class ItemRequest {
+
         @NotBlank
         private String name;
+
         private String description;
+
         private String image;
+
         @PositiveOrZero
         private int count;
+
         @PositiveOrZero
         private int price;
+
+        @PositiveOrZero
+        private int prePrice;
+
         @NotNull
+        private LocalDate expiry;
+
         private Long branchId;
-        @NotNull
+
         private Long categoryId;
     }
 }

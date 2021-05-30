@@ -13,26 +13,40 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor
 public class Item extends BaseEntity {
+
     @NotBlank
     private String name;
+
     private String description;
+
     private String image;
     @PositiveOrZero
+
     private int count;
+
     @PositiveOrZero
     private int price;
 
+    @PositiveOrZero
+    private int prePrice;
+
+    private LocalDate expiry;
+
     @OneToMany(mappedBy = "item")
     private List<Stock> stocks = new ArrayList<>();
+
     @ManyToOne
     private Branch branch;
+
     @ManyToOne
     private Category category;
 

@@ -3,6 +3,7 @@ package com.app.cosmetics.core.item;
 import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.branch.Branch;
 import com.app.cosmetics.core.category.Category;
+import com.app.cosmetics.core.comment.Comment;
 import com.app.cosmetics.core.stock.Stock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,9 @@ public class Item extends BaseEntity {
 
     @ManyToOne
     private Category category;
+
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
 
     public Item(String name, String description, String image, int count, int price, List<Stock> stocks, Branch branch, Category category) {
         this.name = name;

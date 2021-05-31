@@ -45,6 +45,7 @@ public class ItemService {
         item.setPrice(request.getPrice());
         item.setPrePrice(request.getPrePrice());
         item.setExpiry(request.getExpiry());
+        item.setTypes(request.getTypes());
         item.setBranch(branch);
         item.setCategory(category);
 
@@ -84,6 +85,10 @@ public class ItemService {
                 category
         );
 
+        if(request.getTypes().size() != 0) {
+            item.setTypes(request.getTypes());
+        }
+
         Item result = itemRepository.save(item);
 
         return toResponse(result);
@@ -115,6 +120,7 @@ public class ItemService {
                 .price(item.getPrice())
                 .prePrice(item.getPrePrice())
                 .expiry(item.getExpiry())
+                .types(item.getTypes())
                 .category(categoryData)
                 .branch(branchData)
                 .build();

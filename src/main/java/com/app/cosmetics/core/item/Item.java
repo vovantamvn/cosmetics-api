@@ -10,10 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
@@ -44,6 +41,9 @@ public class Item extends BaseEntity {
     private int prePrice;
 
     private LocalDate expiry;
+
+    @ElementCollection
+    private List<String> types = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")
     private List<Stock> stocks = new ArrayList<>();

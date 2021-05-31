@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -130,6 +131,9 @@ public class ItemApi {
 
         @NotNull
         private LocalDate expiry;
+
+        @NotNull
+        private List<String> types;
 
         private Long branchId;
 

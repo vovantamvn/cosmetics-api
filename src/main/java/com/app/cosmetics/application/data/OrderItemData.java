@@ -10,4 +10,5 @@ public class OrderItemData {
     private String name;
     private int count;
     private int price;
+    private int prePrice;
 }

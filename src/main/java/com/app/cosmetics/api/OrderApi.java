@@ -4,7 +4,6 @@ import com.app.cosmetics.api.exception.InvalidRequestException;
 import com.app.cosmetics.application.OrderService;
 import com.app.cosmetics.application.data.OrderData;
 import com.app.cosmetics.core.item.ItemRepository;
-import com.app.cosmetics.core.order.PaymentMethod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -53,7 +53,7 @@ public class OrderApi {
                     bindingResult.rejectValue(
                             "items",
                             "NOT_FOUND",
-                            String.format("itemId %ld not found", itemBill.getItemId())
+                            "itemId " + itemBill.getItemId() + " not found"
                     );
 
                     break;
@@ -94,6 +94,7 @@ public class OrderApi {
         @NotBlank
         private String phone;
 
+        @Email
         @NotBlank
         private String email;
 

@@ -22,13 +22,16 @@ public class OrderItem extends BaseEntity {
 
     private int price;
 
+    private int prePrice;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Order order;
 
-    public OrderItem(Item item, int count, int price, Order order) {
+    public OrderItem(Item item, int count, int price, int prePrice, Order order) {
         this.item = item;
         this.count = count;
         this.price = price;
+        this.prePrice = prePrice;
         this.order = order;
     }
 }

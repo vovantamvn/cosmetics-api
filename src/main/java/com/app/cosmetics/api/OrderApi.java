@@ -15,10 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +112,8 @@ public class OrderApi {
 
         private String note;
 
+        @NotNull
+        @Valid
         private List<OrderItemRequest> items;
     }
 
@@ -125,7 +124,7 @@ public class OrderApi {
         @NotNull
         private Long itemId;
 
-        @PositiveOrZero
+        @Positive
         private int count;
     }
 }

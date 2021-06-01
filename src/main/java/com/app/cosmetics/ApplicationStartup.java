@@ -19,7 +19,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Log4j2
@@ -88,16 +88,16 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         Category category = new Category("Kem dưỡng da");
         Branch branch = new Branch("Pond");
 
-        Item item = new Item(
-                "Kem dưỡng da Pond",
-                "Đây là kem dưỡng da số 1",
-                "",
-                100,
-                50_000,
-                new ArrayList<>(),
-                branch,
-                category
-        );
+        Item item = new Item();
+        item.setName("Kem dưỡng da Pond");
+        item.setDescription("Đây là kem dưỡng da số 1");
+        item.setCount(100);
+        item.setPrice(50_000);
+        item.setPrice(80_000);
+        item.setTypes(List.of("30ml", "50ml"));
+        item.setExpiry(LocalDate.of(2023, 06, 06));
+        item.setBranch(branch);
+        item.setCategory(category);
 
         itemRepository.deleteAll();
         categoryRepository.deleteAll();

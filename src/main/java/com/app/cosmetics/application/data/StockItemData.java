@@ -3,14 +3,12 @@ package com.app.cosmetics.application.data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class StockResponse {
+@Setter
+public class StockItemData {
     private Long id;
 
-    private int count;
-
-    private int price;
-
     private Long itemId;
+
+    private int count;
 }

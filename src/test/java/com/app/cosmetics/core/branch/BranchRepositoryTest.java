@@ -2,13 +2,13 @@ package com.app.cosmetics.core.branch;
 
 import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.item.ItemRepository;
-import com.app.cosmetics.core.stock.Stock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,16 +31,16 @@ class BranchRepositoryTest {
     void it_should_delete_branch_and_items() {
         // Arrange
         Branch branch = new Branch("Branch");
-        Item item = new Item(
-                "Name",
-                "Description",
-                "Image",
-                15,
-                50_000,
-                new ArrayList<Stock>(),
-                branch,
-                null
-        );
+
+        Item item = new Item();
+        item.setName("Kem dưỡng da Pond");
+        item.setDescription("Đây là kem dưỡng da số 1");
+        item.setCount(100);
+        item.setPrice(50_000);
+        item.setPrice(80_000);
+        item.setTypes(List.of("30ml", "50ml"));
+        item.setExpiry(LocalDate.of(2023, 06, 06));
+        item.setBranch(branch);
 
         // Act
         branchRepository.save(branch);

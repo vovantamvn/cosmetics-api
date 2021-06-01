@@ -1,6 +1,5 @@
 package com.app.cosmetics.core.order;
 
-import com.app.cosmetics.core.account.Account;
 import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.orderitem.OrderItem;
 import lombok.Getter;
@@ -18,8 +17,15 @@ import java.util.List;
 @NoArgsConstructor
 public class Order extends BaseEntity {
 
-    @ManyToOne
-    private Account account;
+    private String firstName;
+
+    private String lastName;
+
+    private String address;
+
+    private String phone;
+
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -33,15 +39,11 @@ public class Order extends BaseEntity {
     @PositiveOrZero
     private int total;
 
+    @PositiveOrZero
+    private int totalPre;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    public Order(Account account, OrderStatus status, int total, List<OrderItem> orderItems) {
-        this.account = account;
-        this.status = status;
-        this.total = total;
-        this.orderItems = orderItems;
-    }
 
     public void update(OrderStatus status) {
         this.status = status;

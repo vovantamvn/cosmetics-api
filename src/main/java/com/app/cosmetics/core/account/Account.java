@@ -1,7 +1,6 @@
 package com.app.cosmetics.core.account;
 
 import com.app.cosmetics.core.base.BaseEntity;
-import com.app.cosmetics.core.order.Order;
 import com.app.cosmetics.core.role.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,9 +37,6 @@ public class Account extends BaseEntity {
     private String avatar;
 
     private String phone;
-
-    @OneToMany(mappedBy = "account")
-    private List<Order> orders = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

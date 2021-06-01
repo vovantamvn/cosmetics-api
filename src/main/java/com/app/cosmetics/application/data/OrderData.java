@@ -16,6 +16,7 @@ public class OrderData {
     private String phone;
     private String email;
     private int total;
+    private int totalPre;
     private PaymentMethod paymentMethod;
     private String note;
     private List<OrderItemData> items;

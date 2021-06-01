@@ -14,6 +14,7 @@ import com.app.cosmetics.core.orderitem.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final OrderItemRepository orderItemRepository;
 
+    @Transactional
     public OrderData create(OrderApi.OrderRequest request) {
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -48,6 +50,12 @@ public class OrderService {
         for (OrderApi.OrderItemRequest data : request.getItems()) {
             Item item = itemRepository.findById(data.getItemId())
                     .orElseThrow(NotFoundException::new);
+
+            int currentCount = item.getCount() - data.getCount();
+
+            item.setCount(currentCount);
+
+            itemRepository.save(item);
 
             OrderItem orderItem = new OrderItem(
                     item,

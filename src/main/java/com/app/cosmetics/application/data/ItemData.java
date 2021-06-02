@@ -24,6 +24,8 @@ public class ItemData {
 
     private int prePrice;
 
+    private int discountPrice;
+
     private LocalDate expiry;
 
     private List<String> types;

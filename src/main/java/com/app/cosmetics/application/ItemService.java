@@ -44,6 +44,7 @@ public class ItemService {
         item.setCount(request.getCount());
         item.setPrice(request.getPrice());
         item.setPrePrice(request.getPrePrice());
+        item.setDiscountPrice(request.getDiscountPrice());
         item.setExpiry(request.getExpiry());
         item.setTypes(request.getTypes());
         item.setBranch(branch);
@@ -54,7 +55,7 @@ public class ItemService {
         return toResponse(result);
     }
 
-    public ItemData findById(long id) {
+    public ItemData findById(Long id) {
         Item item = itemRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -62,7 +63,7 @@ public class ItemService {
         return toResponse(item);
     }
 
-    public ItemData update(long id, ItemApi.ItemRequest request) {
+    public ItemData update(Long id, ItemApi.ItemRequest request) {
         Item item = itemRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
@@ -75,19 +76,18 @@ public class ItemService {
                 .findById(request.getCategoryId())
                 .orElseThrow(NotFoundException::new);
 
-        item.update(
-                request.getName(),
-                request.getDescription(),
-                request.getImage(),
-                request.getCount(),
-                request.getPrice(),
-                branch,
-                category
-        );
+        item.setName(request.getName());
+        item.setDescription(request.getDescription());
+        item.setImage(request.getImage());
 
-        if(request.getTypes().size() != 0) {
-            item.setTypes(request.getTypes());
-        }
+        item.setCount(request.getCount());
+
+        item.setPrice(request.getPrice());
+        item.setPrePrice(request.getPrePrice());
+        item.setDiscountPrice(request.getDiscountPrice());
+        item.setCategory(category);
+        item.setBranch(branch);
+        item.setTypes(request.getTypes());
 
         Item result = itemRepository.save(item);
 
@@ -95,11 +95,18 @@ public class ItemService {
     }
 
     public List<ItemData> findAll() {
-        return itemRepository
-                .findAll()
+        return itemRepository.findAll()
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void delete(Long id) {
+        if (itemRepository.existsById(id)) {
+            itemRepository.deleteById(id);
+        } else {
+            throw new NotFoundException();
+        }
     }
 
     private ItemData toResponse(Item item) {
@@ -119,18 +126,11 @@ public class ItemService {
                 .count(item.getCount())
                 .price(item.getPrice())
                 .prePrice(item.getPrePrice())
+                .discountPrice(item.getDiscountPrice())
                 .expiry(item.getExpiry())
                 .types(item.getTypes())
                 .category(categoryData)
                 .branch(branchData)
                 .build();
-    }
-
-    public void delete(Long id) {
-        if (itemRepository.existsById(id)) {
-            itemRepository.deleteById(id);
-        } else {
-            throw new NotFoundException();
-        }
     }
 }

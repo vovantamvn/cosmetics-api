@@ -129,6 +129,9 @@ public class ItemApi {
         @PositiveOrZero
         private int prePrice;
 
+        @PositiveOrZero
+        private int discountPrice;
+
         @NotNull
         private LocalDate expiry;
 

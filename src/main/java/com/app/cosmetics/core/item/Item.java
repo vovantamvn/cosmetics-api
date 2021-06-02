@@ -37,6 +37,9 @@ public class Item extends BaseEntity {
     @PositiveOrZero
     private int prePrice;
 
+    @PositiveOrZero
+    private int discountPrice;
+
     private LocalDate expiry;
 
     @ElementCollection
@@ -53,15 +56,4 @@ public class Item extends BaseEntity {
 
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
-
-    public void update(String name, String description, String image, int count, int price, Branch branch, Category category) {
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.count = count;
-        this.price = price;
-        this.branch = branch;
-        this.category = category;
-    }
 }
-

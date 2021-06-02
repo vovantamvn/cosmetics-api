@@ -60,7 +60,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem(
                     item,
                     data.getCount(),
-                    item.getPrice(),
+                    item.getDiscountPrice(),
                     item.getPrePrice(),
                     order
             );
@@ -69,7 +69,7 @@ public class OrderService {
 
             orderItems.add(orderItem);
 
-            total += item.getPrice() * data.getCount();
+            total += item.getDiscountPrice() * data.getCount();
             totalPre += item.getPrePrice() * data.getCount();
         }
 

@@ -11,11 +11,11 @@ import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.item.ItemRepository;
 import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.api.exception.NotFoundException;
+import com.app.cosmetics.core.lot.Lot;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,11 +41,9 @@ public class ItemService {
         item.setName(request.getName());
         item.setDescription(request.getDescription());
         item.setImage(request.getImage());
-        item.setCount(request.getCount());
         item.setPrice(request.getPrice());
         item.setPrePrice(request.getPrePrice());
         item.setDiscountPrice(request.getDiscountPrice());
-        item.setExpiry(request.getExpiry());
         item.setTypes(request.getTypes());
         item.setBranch(branch);
         item.setCategory(category);
@@ -79,9 +77,6 @@ public class ItemService {
         item.setName(request.getName());
         item.setDescription(request.getDescription());
         item.setImage(request.getImage());
-
-        item.setCount(request.getCount());
-
         item.setPrice(request.getPrice());
         item.setPrePrice(request.getPrePrice());
         item.setDiscountPrice(request.getDiscountPrice());
@@ -109,6 +104,16 @@ public class ItemService {
         }
     }
 
+    public int getCountOfItem(Item item) {
+        int total = 0;
+
+        for (Lot lot : item.getLots()) {
+            total += lot.getCount();
+        }
+
+        return total;
+    }
+
     private ItemData toResponse(Item item) {
         CategoryData categoryData = (item.getCategory() == null)
                 ? null
@@ -123,11 +128,10 @@ public class ItemService {
                 .name(item.getName())
                 .description(item.getDescription())
                 .image(item.getImage())
-                .count(item.getCount())
+                .count(this.getCountOfItem(item))
                 .price(item.getPrice())
                 .prePrice(item.getPrePrice())
                 .discountPrice(item.getDiscountPrice())
-                .expiry(item.getExpiry())
                 .types(item.getTypes())
                 .category(categoryData)
                 .branch(branchData)

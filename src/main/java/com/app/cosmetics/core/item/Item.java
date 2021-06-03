@@ -4,6 +4,7 @@ import com.app.cosmetics.core.base.BaseEntity;
 import com.app.cosmetics.core.branch.Branch;
 import com.app.cosmetics.core.category.Category;
 import com.app.cosmetics.core.comment.Comment;
+import com.app.cosmetics.core.lot.Lot;
 import com.app.cosmetics.core.orderitem.OrderItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +29,6 @@ public class Item extends BaseEntity {
     private String image;
 
     @PositiveOrZero
-    private int count;
-
-    @PositiveOrZero
     private int price;
 
     @PositiveOrZero
@@ -39,8 +36,6 @@ public class Item extends BaseEntity {
 
     @PositiveOrZero
     private int discountPrice;
-
-    private LocalDate expiry;
 
     @ElementCollection
     private List<String> types = new ArrayList<>();
@@ -51,9 +46,12 @@ public class Item extends BaseEntity {
     @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE)
+    private List<Lot> lots = new ArrayList<>();
 }

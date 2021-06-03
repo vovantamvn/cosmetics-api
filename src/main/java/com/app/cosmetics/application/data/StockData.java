@@ -1,12 +1,12 @@
 package com.app.cosmetics.application.data;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Builder
 public class StockData {
     private Long id;
 
@@ -14,7 +14,13 @@ public class StockData {
 
     private String phone;
 
-    private int total;
+    private String address;
 
-    private List<StockItemData> stockItems;
+    private int count;
+
+    private int price;
+
+    private LocalDateTime created;
+
+    private LotData lot;
 }

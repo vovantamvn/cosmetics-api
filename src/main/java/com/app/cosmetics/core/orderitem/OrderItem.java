@@ -5,12 +5,14 @@ import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.order.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class OrderItem extends BaseEntity {

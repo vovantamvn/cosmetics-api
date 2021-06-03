@@ -16,6 +16,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,23 +31,12 @@ public class StockApi {
     @PostMapping
     public ResponseEntity<StockData> create(@Valid @RequestBody StockRequest request, BindingResult bindingResult) {
 
-        if (request.getStockItems() == null || request.getStockItems().size() == 0) {
+        if (!itemRepository.existsById(request.getItemId())) {
             bindingResult.rejectValue(
-                    "stockItems",
-                    "NOT_NULL",
-                    "stockItems must be not null"
+                    "itemId",
+                    "INVALID",
+                    "itemId " + request.getItemId() + " not exists"
             );
-        } else {
-            for (StockItemRequest stockItemRequest : request.getStockItems()) {
-                if (!itemRepository.existsById(stockItemRequest.getItemId())) {
-                    bindingResult.rejectValue(
-                            "stockItems",
-                            "INVALID",
-                            "itemId " + stockItemRequest.getItemId() + " not exists"
-                    );
-                    break;
-                }
-            }
         }
 
         if (bindingResult.hasErrors()) {
@@ -75,20 +66,24 @@ public class StockApi {
         private String name;
 
         @NotBlank
+        private String address;
+
+        @NotBlank
         private String phone;
 
         @NotNull
-        @Valid
-        private List<StockItemRequest> stockItems;
-    }
+        private LocalDate manufacturing;
 
-    @Getter
-    @Setter
-    public static class StockItemRequest {
         @NotNull
-        private Long itemId;
+        private LocalDate expiry;
 
         @Positive
         private int count;
+
+        @PositiveOrZero
+        private int price;
+
+        @NotNull
+        private Long itemId;
     }
 }

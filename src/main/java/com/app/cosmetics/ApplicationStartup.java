@@ -19,7 +19,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Log4j2
@@ -50,7 +49,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 new Role(RoleType.ROLE_ADMIN),
                 new Role(RoleType.ROLE_EMPLOYEE),
                 new Role(RoleType.ROLE_USER)
-        ).forEach(role -> roleRepository.save(role));
+        ).forEach(roleRepository::save);
 
         log.info("Fake role success");
     }
@@ -91,11 +90,10 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         Item item = new Item();
         item.setName("Kem dưỡng da Pond");
         item.setDescription("Đây là kem dưỡng da số 1");
-        item.setCount(100);
-        item.setPrice(50_000);
         item.setPrice(80_000);
+        item.setPrePrice(60_000);
+        item.setDiscountPrice(75_000);
         item.setTypes(List.of("30ml", "50ml"));
-        item.setExpiry(LocalDate.of(2023, 06, 06));
         item.setBranch(branch);
         item.setCategory(category);
 

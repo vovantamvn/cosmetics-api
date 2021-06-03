@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,11 +39,9 @@ class ItemRepositoryTest {
         Item item = new Item();
         item.setName("Kem dưỡng da Pond");
         item.setDescription("Đây là kem dưỡng da số 1");
-        item.setCount(100);
         item.setPrice(50_000);
         item.setPrice(80_000);
         item.setTypes(List.of("30ml", "50ml"));
-        item.setExpiry(LocalDate.of(2023, 06, 06));
         item.setCategory(category);
 
         // Act
@@ -69,11 +66,9 @@ class ItemRepositoryTest {
         Item item = new Item();
         item.setName("Kem dưỡng da Pond");
         item.setDescription("Đây là kem dưỡng da số 1");
-        item.setCount(100);
         item.setPrice(50_000);
         item.setPrice(80_000);
         item.setTypes(List.of("30ml", "50ml"));
-        item.setExpiry(LocalDate.of(2023, 06, 06));
         item.setBranch(branch);
 
         // Act

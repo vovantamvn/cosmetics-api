@@ -1,13 +1,12 @@
 package com.app.cosmetics.core.stock;
 
-import com.app.cosmetics.core.stockitem.StockItem;
-import com.app.cosmetics.core.stockitem.StockItemRepository;
+import com.app.cosmetics.core.lot.Lot;
+import com.app.cosmetics.core.lot.LotRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,32 +17,32 @@ class StockRepositoryTest {
     private StockRepository stockRepository;
 
     @Autowired
-    private StockItemRepository stockItemRepository;
+    private LotRepository lotRepository;
 
     @Test
-    void it_should_save_stock_items_when_save_stock() {
+    void it_should_save_lot_when_save_stock() {
         // Arrange
-        StockItem stockItem = new StockItem();
-        stockItem.setItemId(1l);
-        stockItem.setCount(15);
-
-        List<StockItem> stockItems = Arrays.asList(stockItem);
+        Lot lot = new Lot();
+        lot.setCount(15);
+        lot.setManufacturing(LocalDate.now());
+        lot.setExpiry(LocalDate.now());
 
         Stock stock = new Stock();
-        stock.setName("name");
-        stock.setTotal(225);
-        stock.setPhone("0859292354");
-        stock.setStockItems(stockItems);
+        stock.setLot(lot);
+        stock.setCount(15);
+        stock.setPrice(150_000);
 
         // Act
         stockRepository.save(stock);
 
+        Long lotId = lot.getId();
+
+        Lot result = lotRepository.findById(lotId)
+                .orElseThrow();
+
         // Assert
-        assertEquals(1, stock.getStockItems().size());
-
-        StockItem item = stock.getStockItems().get(0);
-
-        assertEquals(1l, item.getItemId());
-        assertEquals(15, item.getCount());
+        assertEquals(15, result.getCount());
+        assertEquals(LocalDate.now(), result.getManufacturing());
+        assertEquals(LocalDate.now(), result.getExpiry());
     }
 }

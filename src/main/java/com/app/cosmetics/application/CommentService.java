@@ -10,6 +10,7 @@ import com.app.cosmetics.core.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ItemRepository itemRepository;
 
-    /**
-     * CRUD
-     *
-     * @param request
-     * @return
-     */
     public CommentData create(CommentApi.CommentRequest request) {
         Item item = itemRepository.findById(request.getItemId())
                 .orElseThrow(NotFoundException::new);
@@ -46,6 +41,7 @@ public class CommentService {
         return toResponse(comment);
     }
 
+    @Transactional
     public List<CommentData> findAllByItemId(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(NotFoundException::new)

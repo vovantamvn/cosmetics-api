@@ -40,9 +40,8 @@ public class ItemService {
         Item item = new Item();
         item.setName(request.getName());
         item.setDescription(request.getDescription());
-        item.setImage(request.getImage());
+        item.setImages(request.getImages());
         item.setPrice(request.getPrice());
-        item.setPrePrice(request.getPrePrice());
         item.setDiscountPrice(request.getDiscountPrice());
         item.setTypes(request.getTypes());
         item.setBranch(branch);
@@ -76,9 +75,8 @@ public class ItemService {
 
         item.setName(request.getName());
         item.setDescription(request.getDescription());
-        item.setImage(request.getImage());
+        item.setImages(request.getImages());
         item.setPrice(request.getPrice());
-        item.setPrePrice(request.getPrePrice());
         item.setDiscountPrice(request.getDiscountPrice());
         item.setCategory(category);
         item.setBranch(branch);
@@ -127,7 +125,7 @@ public class ItemService {
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
-                .image(item.getImage())
+                .images(item.getImages())
                 .count(this.getCountOfItem(item))
                 .price(item.getPrice())
                 .prePrice(item.getPrePrice())

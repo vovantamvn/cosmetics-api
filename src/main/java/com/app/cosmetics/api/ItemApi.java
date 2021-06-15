@@ -7,21 +7,16 @@ import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
 import com.app.cosmetics.core.branch.BranchRepository;
 import com.app.cosmetics.core.category.CategoryRepository;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import javax.validation.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @RestController
@@ -118,22 +113,14 @@ public class ItemApi {
 
         private String description;
 
-        private String image;
-
-        @PositiveOrZero
-        private int count;
+        @Size(min = 1)
+        private List<String> images;
 
         @PositiveOrZero
         private int price;
 
         @PositiveOrZero
-        private int prePrice;
-
-        @PositiveOrZero
         private int discountPrice;
-
-        @NotNull
-        private LocalDate expiry;
 
         @NotNull
         private List<String> types;

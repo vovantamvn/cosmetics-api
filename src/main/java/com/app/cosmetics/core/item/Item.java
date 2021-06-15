@@ -26,7 +26,8 @@ public class Item extends BaseEntity {
     @Lob
     private String description;
 
-    private String image;
+    @ElementCollection
+    private List<String> images;
 
     @PositiveOrZero
     private int price;

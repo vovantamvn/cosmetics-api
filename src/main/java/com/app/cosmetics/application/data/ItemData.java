@@ -16,7 +16,7 @@ public class ItemData {
 
     private String description;
 
-    private String image;
+    private List<String> images;
 
     private int count;
 
@@ -25,8 +25,6 @@ public class ItemData {
     private int prePrice;
 
     private int discountPrice;
-
-    private LocalDate expiry;
 
     private List<String> types;
 

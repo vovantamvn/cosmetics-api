@@ -25,9 +25,12 @@ public class StockService {
 
     @Transactional
     public StockData create(StockApi.StockRequest request) {
-
         Item item = itemRepository.findById(request.getItemId())
                 .orElseThrow(NotFoundException::new);
+
+        item.setPrePrice(request.getPrice());
+
+        itemRepository.save(item);
 
         Lot lot = new Lot();
         lot.setItem(item);

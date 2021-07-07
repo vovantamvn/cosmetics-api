@@ -8,9 +8,12 @@ import com.app.cosmetics.core.category.Category;
 import com.app.cosmetics.core.category.CategoryRepository;
 import com.app.cosmetics.core.item.Item;
 import com.app.cosmetics.core.item.ItemRepository;
+import com.app.cosmetics.core.lot.Lot;
 import com.app.cosmetics.core.role.Role;
 import com.app.cosmetics.core.role.RoleRepository;
 import com.app.cosmetics.core.role.RoleType;
+import com.app.cosmetics.core.stock.Stock;
+import com.app.cosmetics.core.stock.StockRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -19,6 +22,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Log4j2
@@ -104,6 +108,20 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         categoryRepository.save(category);
         branchRepository.save(branch);
         itemRepository.save(item);
+
+        Lot lot = new Lot();
+        lot.setCount(100);
+        lot.setItem(item);
+        lot.setManufacturing(LocalDate.now());
+        lot.setExpiry(LocalDate.now());
+
+        Stock stock = new Stock();
+        stock.setLot(lot);
+        stock.setPrice(50_000);
+        stock.setCount(lot.getCount());
+
+        StockRepository stockRepository = context.getBean(StockRepository.class);
+        stockRepository.save(stock);
 
         log.info("Fake category, brand, item success");
     }

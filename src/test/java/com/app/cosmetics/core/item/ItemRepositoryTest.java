@@ -4,6 +4,7 @@ import com.app.cosmetics.core.branch.Branch;
 import com.app.cosmetics.core.branch.BranchRepository;
 import com.app.cosmetics.core.category.Category;
 import com.app.cosmetics.core.category.CategoryRepository;
+import com.app.cosmetics.helper.CreateItemHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,43 @@ class ItemRepositoryTest {
     void setUp() {
         itemRepository.deleteAll();
         categoryRepository.deleteAll();
+    }
+
+    @Test
+    void it_should_order_by_sold_asc() {
+        // Arrange
+        Item itemOne = CreateItemHelper.create();
+        itemOne.setSold(15);
+        Item itemTwo = CreateItemHelper.create();
+        itemTwo.setSold(35);
+
+        // Act
+        itemRepository.save(itemOne);
+        itemRepository.save(itemTwo);
+
+        // Assert
+        List<Item> hotItems = itemRepository.findHotItems();
+        assertEquals(2, hotItems.size());
+        assertEquals(35, hotItems.get(0).getSold());
+        assertEquals(15, hotItems.get(1).getSold());
+    }
+
+    @Test
+    void it_should_order_by_created_decs() {
+        // Arrange
+        Item itemOne = CreateItemHelper.create();
+        Item itemTwo = CreateItemHelper.create();
+
+        // Act
+        itemRepository.save(itemOne);
+        itemRepository.flush();
+        itemRepository.save(itemTwo);
+
+        // Assert
+        List<Item> newItems = itemRepository.findNewItems();
+        assertEquals(2, newItems.size());
+        assertEquals(itemOne.getId(), newItems.get(1).getId());
+        assertEquals(itemTwo.getId(), newItems.get(0).getId());
     }
 
     @Test

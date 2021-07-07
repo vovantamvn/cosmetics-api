@@ -20,6 +20,8 @@ public class ItemData {
 
     private int count;
 
+    private int sold;
+
     private int price;
 
     private int prePrice;

@@ -23,7 +23,7 @@ public class Item extends BaseEntity {
     @NotBlank
     private String name;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ElementCollection
@@ -37,6 +37,9 @@ public class Item extends BaseEntity {
 
     @PositiveOrZero
     private int discountPrice;
+
+    @PositiveOrZero
+    private int sold;
 
     @ElementCollection
     private List<String> types = new ArrayList<>();

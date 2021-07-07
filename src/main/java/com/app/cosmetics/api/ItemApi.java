@@ -29,8 +29,8 @@ public class ItemApi {
     private final AuthorizationService authorizationService;
 
     @GetMapping
-    public ResponseEntity<List<ItemData>> findAll() {
-        return ResponseEntity.ok(itemService.findAll());
+    public ResponseEntity<List<ItemData>> findAll(@RequestParam(defaultValue = "none") String sort) {
+        return ResponseEntity.ok(itemService.findAll(sort));
     }
 
     @GetMapping(path = "/{id}")

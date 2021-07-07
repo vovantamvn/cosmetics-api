@@ -86,6 +86,11 @@ public class OrderService {
             );
 
             orderItems.add(orderItem);
+
+            // Update sold
+            int sold = item.getSold() + data.getCount();
+            item.setSold(sold);
+            itemRepository.save(item);
         }
 
         return orderItems;

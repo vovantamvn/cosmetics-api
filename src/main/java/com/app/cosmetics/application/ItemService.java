@@ -87,11 +87,22 @@ public class ItemService {
         return toResponse(result);
     }
 
-    public List<ItemData> findAll() {
-        return itemRepository.findAll()
-                .stream()
+    public List<ItemData> findAll(String sort) {
+        List<Item> items = getSortItems(sort);
+
+        return items.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    private List<Item> getSortItems(String sort) {
+        if (sort.equals("hot")) {
+            return itemRepository.findHotItems();
+        }
+        if (sort.equals("new")) {
+            return itemRepository.findNewItems();
+        }
+        return itemRepository.findAll();
     }
 
     public void delete(Long id) {
@@ -129,6 +140,7 @@ public class ItemService {
                 .count(this.getCountOfItem(item))
                 .price(item.getPrice())
                 .prePrice(item.getPrePrice())
+                .sold(item.getSold())
                 .discountPrice(item.getDiscountPrice())
                 .types(item.getTypes())
                 .category(categoryData)

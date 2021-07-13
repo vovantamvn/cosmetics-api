@@ -2,13 +2,18 @@ package com.app.cosmetics.storage;
 
 import com.app.cosmetics.application.data.FileData;
 import com.app.cosmetics.application.UploadFileService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.aspectj.util.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,8 +28,9 @@ class UploadFileServiceTest {
         String fileName = "image.png";
         String filePath = currentPath + "/storage/" + fileName;
 
-        File file = new File(filePath);
-        byte[] expected = FileUtil.readAsByteArray(file);
+        Path path = Paths.get(filePath);
+        byte[] expected = {1, 2, 3, 4, 5, 6};
+        Files.write(path, expected);
 
         // Act
         byte[] actual = uploadFileService.loadFile(fileName);

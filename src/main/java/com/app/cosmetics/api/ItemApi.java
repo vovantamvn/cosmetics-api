@@ -3,6 +3,7 @@ package com.app.cosmetics.api;
 import com.app.cosmetics.api.exception.InvalidRequestException;
 import com.app.cosmetics.api.exception.NoAuthorizationException;
 import com.app.cosmetics.application.AuthorizationService;
+import com.app.cosmetics.application.data.ItemAnalyticData;
 import com.app.cosmetics.application.data.ItemData;
 import com.app.cosmetics.application.ItemService;
 import com.app.cosmetics.core.branch.BranchRepository;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping(path = "items")
@@ -36,6 +39,21 @@ public class ItemApi {
     @GetMapping(path = "/{id}")
     public ResponseEntity<ItemData> findById(@PathVariable Long id) {
         return ResponseEntity.ok(itemService.findById(id));
+    }
+
+    @GetMapping(path = "/analytics")
+    public ResponseEntity<List<ItemAnalyticData>> getAnalytics() {
+        List<ItemAnalyticData> itemAnalyticData = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            ItemAnalyticData data = new ItemAnalyticData();
+            data.setName(String.format("San pham %d", i + 1));
+            data.setData(1000 * (int) (System.currentTimeMillis() % 100));
+
+            itemAnalyticData.add(data);
+        }
+
+        return ResponseEntity.ok(itemAnalyticData);
     }
 
     @PostMapping

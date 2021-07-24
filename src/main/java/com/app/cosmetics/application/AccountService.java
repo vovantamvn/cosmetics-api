@@ -1,15 +1,14 @@
 package com.app.cosmetics.application;
 
-import com.app.cosmetics.api.exception.NoAuthorizationException;
+import com.app.cosmetics.api.UpdateAccountRequest;
 import com.app.cosmetics.application.data.AccountResponse;
 import com.app.cosmetics.core.account.Account;
 import com.app.cosmetics.core.account.AccountRepository;
-import com.app.cosmetics.api.AccountRequest;
+import com.app.cosmetics.api.CreateAccountRequest;
 import com.app.cosmetics.api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    public AccountResponse create(AccountRequest request) {
+    public AccountResponse create(CreateAccountRequest request) {
         Account account = new Account();
         account.setUsername(request.getUsername());
         account.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -42,15 +41,9 @@ public class AccountService {
     /**
      * Change email, firstName, lastName, avatar, address
      */
-    public AccountResponse update(Long id, AccountRequest request) {
-        Account account = accountRepository.findById(id)
+    public AccountResponse update(String username, UpdateAccountRequest request) {
+        Account account = accountRepository.findAccountByUsername(username)
                 .orElseThrow(NotFoundException::new);
-
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if ( !username.equals(account.getUsername()) ) {
-            throw new NoAuthorizationException();
-        }
 
         account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());
@@ -65,9 +58,17 @@ public class AccountService {
         return toResponse(result);
     }
 
-    public AccountResponse findById(long id) {
+    public AccountResponse findById(Long id) {
         Account account = accountRepository
                 .findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        return toResponse(account);
+    }
+
+    public AccountResponse findByUsername(String username) {
+        Account account = accountRepository
+                .findAccountByUsername(username)
                 .orElseThrow(NotFoundException::new);
 
         return toResponse(account);

@@ -39,4 +39,13 @@ public class AuthorizationService {
         String username = (String) authentication.getPrincipal();
         return accountRepository.findAccountByUsername(username);
     }
+
+    public Optional<String> getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) authentication.getPrincipal();
+
+        if (username.equals("anonymousUser")) return Optional.empty();
+
+        return Optional.of(username);
+    }
 }

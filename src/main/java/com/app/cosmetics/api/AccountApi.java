@@ -1,6 +1,8 @@
 package com.app.cosmetics.api;
 
 import com.app.cosmetics.api.exception.InvalidRequestException;
+import com.app.cosmetics.api.exception.MyException;
+import com.app.cosmetics.application.AuthorizationService;
 import com.app.cosmetics.application.data.AccountResponse;
 import com.app.cosmetics.application.AccountService;
 import com.app.cosmetics.core.account.AccountRepository;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "accounts")
@@ -22,10 +25,11 @@ public class AccountApi {
 
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final AuthorizationService authorizationService;
 
     @PostMapping
     public ResponseEntity<AccountResponse> create(
-            @Valid @RequestBody AccountRequest request,
+            @Valid @RequestBody CreateAccountRequest request,
             BindingResult bindingResult
     ) {
         if (accountRepository.findAccountByEmail(request.getEmail()).isPresent()) {
@@ -53,9 +57,36 @@ public class AccountApi {
         return ResponseEntity.ok(data);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<AccountResponse> update(@PathVariable Long id, @Valid @RequestBody AccountRequest request) {
-        AccountResponse data = accountService.update(id, request);
+    @GetMapping(value = "/profile")
+    public ResponseEntity<AccountResponse> findProfile() {
+        Optional<String> optUsername = authorizationService.getCurrentUsername();
+
+        if (optUsername.isEmpty()) {
+            throw new MyException(HttpStatus.BAD_REQUEST, "You are anonymousUser");
+        }
+
+        AccountResponse data = accountService.findByUsername(optUsername.get());
+
+        return ResponseEntity.ok(data);
+    }
+
+    @PutMapping(value = "/profile")
+    public ResponseEntity<AccountResponse> update(
+            @Valid @RequestBody UpdateAccountRequest request,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRequestException(bindingResult);
+        }
+
+        Optional<String> optUsername = authorizationService.getCurrentUsername();
+
+        if (optUsername.isEmpty()) {
+            throw new MyException(HttpStatus.BAD_REQUEST, "You are anonymousUser");
+        }
+
+        AccountResponse data = accountService.update(optUsername.get(), request);
+
         return ResponseEntity.ok(data);
     }
 }

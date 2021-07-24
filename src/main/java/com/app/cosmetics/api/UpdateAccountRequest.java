@@ -6,15 +6,9 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Setter
 @Getter
-public class AccountRequest {
-    @NotBlank
-    private String username;
-
-    @NotBlank
-    private String password;
-
+@Setter
+public class UpdateAccountRequest {
     @Email
     private String email;
 
@@ -25,5 +19,6 @@ public class AccountRequest {
 
     private String address;
 
+    @NotBlank
     private String avatar;
 }

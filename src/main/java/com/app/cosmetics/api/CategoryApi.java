@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +31,18 @@ public class CategoryApi {
     private final AuthorizationService authorizationService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryData>> findAll() {
-        return ResponseEntity.ok(categoryService.findAll());
+    public ResponseEntity<Page<CategoryData>> findAll(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "20") Integer size
+    ) {
+        Optional<String> optName = Optional.empty();
+
+        if (!name.equals("")) optName = Optional.of(name);
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return ResponseEntity.ok(categoryService.findAll(optName, pageable));
     }
 
     @GetMapping(path = "/{id}")

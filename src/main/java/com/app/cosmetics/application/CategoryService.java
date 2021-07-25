@@ -6,10 +6,11 @@ import com.app.cosmetics.core.category.Category;
 import com.app.cosmetics.core.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +27,16 @@ public class CategoryService {
         return toResponse(category);
     }
 
-    public List<CategoryData> findAll() {
-        return categoryRepository
-                .findAll()
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public Page<CategoryData> findAll(Optional<String> optName, Pageable pageable) {
+        Page<Category> categories;
+
+        if (optName.isEmpty()) {
+            categories = categoryRepository.findAll(pageable);
+        } else {
+            categories = categoryRepository.findAllByName(optName.get(), pageable);
+        }
+
+        return categories.map(this::toResponse);
     }
 
     public CategoryData create(String name) {

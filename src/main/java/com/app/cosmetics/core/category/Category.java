@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Category extends BaseEntity {
+
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
